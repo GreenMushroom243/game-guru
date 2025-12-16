@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game Guru</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      padding: 20px;
+      color: white;
+    }
+
+    h1 { text-align: center; }
+    .subtitle { text-align: center; color: #ddd; }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      color: #333;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .sport-card {
+      background: #f5f5f5;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+      text-align: center;
+    }
+
+    .sport-card:hover { transform: scale(1.05); }
+
+    .sport-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 8px;
+      background: #1e88e5;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover { background: #1565c0; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+
+<body>
+
+<h1>🏆 Game Guru</h1>
+<p class="subtitle">AI-Based Sports & Fitness Coaching</p>
+
+<div class="container">
+
+<!-- FIRST SCREEN -->
+<div class="card" id="sportsSection">
+  <h2>Select a Category</h2>
+  <div class="grid">
+
+    <div class="sport-card" onclick="selectSport('Cricket')">
+      <img src="https://images.unsplash.com/photo-1593766827228-8737b4534aa6?auto=format&fit=crop&w=800&q=60">
+      <p>🏏 Cricket</p>
+    </div>
+
+    <div class="sport-card" onclick="selectSport('Basketball')">
+     <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=800&q=60">
+      <p>🏀 Basketball</p>
+
+    </div>
+
+    <div class="sport-card" onclick="selectSport('Football')">
+      <img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=800&q=60">
+      <p>⚽ Football</p>
+    </div>
+
+    <div class="sport-card" onclick="selectSport('Athletics')">
+      <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=60">
+      <p>🏃 Athletics</p>
+    </div>
+
+    <div class="sport-card" onclick="openAICoach()" 
+     style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
+            color: white; 
+            padding: 30px;">
+  <div style="font-size: 48px;">🤖</div>
+  <p style="font-size: 18px; font-weight: bold; margin-top: 10px;">
+    AI Coach
+  </p>
+  <p style="font-size: 13px; opacity: 0.9;">
+    Smart Diet & Training
+  </p>
+</div>
+
+  </div>
+</div>
+
+<!-- COACH SECTION -->
+<div class="card hidden" id="coachSection">
+  <h2 id="coachTitle"></h2>
+  <div id="coachList"></div>
+</div>
+
+<!-- AI COACH SECTION -->
+<div class="card hidden" id="aiSection">
+  <h2>AI Coach Assistant</h2>
+  <button onclick="showDiet()">🥗 Diet Plans</button>
+  <button onclick="showExercise()">💪 Exercise Routines</button>
+  <div id="aiContent"></div>
+</div>
+
+</div>
+
+<script>
+let selectedSport = "";
+
+const coaches = {
+  "Cricket": ["Coach Rahul", "Coach Aman"],
+  "Basketball": ["Coach Neha"],
+  "Football": ["Coach Arjun"],
+  "Athletics": ["Coach Pooja"]
+};
+
+function selectSport(sport) {
+  selectedSport = sport;
+  document.getElementById("aiSection").classList.add("hidden");
+  document.getElementById("coachSection").classList.remove("hidden");
+  document.getElementById("coachTitle").innerText = "Coaches for " + sport;
+
+  let html = "";
+  coaches[sport].forEach(c => {
+    html += `
+      <p><b>${c}</b></p>
+      <button>Select Coach</button>
+      <label>Upload Review Video:</label>
+      <input type="file" accept="video/*"><hr>
+    `;
+  });
+
+  document.getElementById("coachList").innerHTML = html;
+}
+
+function openAICoach() {
+  document.getElementById("coachSection").classList.add("hidden");
+  document.getElementById("aiSection").classList.remove("hidden");
+  document.getElementById("aiContent").innerHTML = "";
+}
+
+function showDiet() {
+  document.getElementById("aiContent").innerHTML = `
+    <h3>Choose Your Goal</h3>
+    <button onclick="dietResult('loss')">Weight Loss</button>
+    <button onclick="dietResult('gain')">Weight Gain</button>
+  `;
+}
+
+function dietResult(type) {
+  document.getElementById("aiContent").innerHTML =
+    type === 'loss'
+    ? "<p>AI Suggestion: High protein, low sugar, daily cardio.</p>"
+    : "<p>AI Suggestion: Calorie surplus, strength training, protein-rich diet.</p>";
+}
+
+function showExercise() {
+  document.getElementById("aiContent").innerHTML = `
+    <h3>Select Exercise Type</h3>
+    <button onclick="ex('Chest')">Chest</button>
+    <button onclick="ex('Legs')">Legs</button>
+    <button onclick="ex('Strength')">Strength</button>
+    <button onclick="ex('Sprint')">Sprint</button>
+    <button onclick="ex('Back')">Back</button>
+    <button onclick="ex('Biceps')">Biceps</button>
+  `;
+}
+
+function ex(type) {
+  document.getElementById("aiContent").innerHTML =
+    "<p>AI Exercise Plan for <b>" + type + "</b>: Basic drills and routines.</p>";
+}
+</script>
+
+</body>
+</html>
