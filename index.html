@@ -89,6 +89,8 @@
       margin-bottom: 10px;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
     .coach-card {
@@ -252,26 +254,16 @@ function showCoachTab(index, tab) {
   if(activeBtn) activeBtn.classList.add("active");
 
   contentDiv.style.transition = "opacity 0.3s";
-  contentDiv.style.opacity = 0; // fade out
+  contentDiv.style.opacity = 0;
   setTimeout(() => {
     if(tab === 'select') {
-      contentDiv.innerHTML = `
-        <button>Select Coach</button>
-        <label>Upload Review Video:</label>
-        <input type="file" accept="video/*">
-      `;
+      contentDiv.innerHTML = `<button>Select Coach</button><label>Upload Review Video:</label><input type="file" accept="video/*">`;
     } else if(tab === 'subscribe') {
-      contentDiv.innerHTML = `
-        <p>Subscribe to this coach for weekly training updates.</p>
-        <button>Subscribe Now</button>
-      `;
+      contentDiv.innerHTML = `<p>Subscribe to this coach for weekly training updates.</p><button>Subscribe Now</button>`;
     } else if(tab === 'demo') {
-      contentDiv.innerHTML = `
-        <p>Sign up for a demo batch session with this coach.</p>
-        <button>Get Demo Batch</button>
-      `;
+      contentDiv.innerHTML = `<p>Sign up for a demo batch session with this coach.</p><button>Get Demo Batch</button>`;
     }
-    contentDiv.style.opacity = 1; // fade in
+    contentDiv.style.opacity = 1;
   }, 200);
 }
 
@@ -289,58 +281,65 @@ function backToSports() {
   document.getElementById("sportsSection").classList.remove("hidden");
 }
 
-// AI tabs
+// AI tabs with fade animation
 function showTab(tab) {
   activeTab = tab;
   document.getElementById("dietTabBtn").classList.toggle("active", tab === 'diet');
   document.getElementById("exerciseTabBtn").classList.toggle("active", tab === 'exercise');
 
-  let content = "";
-  if(tab === 'diet') {
-    content = `<h3>Choose Your Goal</h3>
-      <button onclick="dietResult('loss')">Weight Loss</button>
-      <button onclick="dietResult('gain')">Weight Gain</button>
-      <div id="dietResult" class="ai-result-container"></div>`;
-  } else if(tab === 'exercise') {
-    content = `<h3>Select Exercise Type</h3>
-      <button onclick="ex('Chest')">Chest</button>
-      <button onclick="ex('Legs')">Legs</button>
-      <button onclick="ex('Strength')">Strength</button>
-      <button onclick="ex('Sprint')">Sprint</button>
-      <button onclick="ex('Back')">Back</button>
-      <button onclick="ex('Biceps')">Biceps</button>
-      <div id="exerciseResult" class="ai-result-container"></div>`;
-  }
-  document.getElementById("aiContent").innerHTML = content;
+  const aiContent = document.getElementById("aiContent");
+  aiContent.style.transition = "opacity 0.3s";
+  aiContent.style.opacity = 0;
+
+  setTimeout(() => {
+    let content = "";
+    if(tab === 'diet') {
+      content = `<h3>Choose Your Goal</h3>
+        <button onclick="dietResult('loss')">Weight Loss</button>
+        <button onclick="dietResult('gain')">Weight Gain</button>
+        <div id="dietResult" class="ai-result-container"></div>`;
+    } else if(tab === 'exercise') {
+      content = `<h3>Select Exercise Type</h3>
+        <button onclick="ex('Chest')">Chest</button>
+        <button onclick="ex('Legs')">Legs</button>
+        <button onclick="ex('Strength')">Strength</button>
+        <button onclick="ex('Sprint')">Sprint</button>
+        <button onclick="ex('Back')">Back</button>
+        <button onclick="ex('Biceps')">Biceps</button>
+        <div id="exerciseResult" class="ai-result-container"></div>`;
+    }
+    aiContent.innerHTML = content;
+    aiContent.style.opacity = 1;
+  }, 200);
 }
 
-// AI diet & exercise
+// Diet & Exercise results with fade-in
 function dietResult(goal) {
   const container = document.getElementById("dietResult");
   container.innerHTML = "";
-  aiData.diet[goal].forEach(d => {
+  aiData.diet[goal].forEach((d, i) => {
     const div = document.createElement("div");
     div.className = "ai-result-card";
     div.innerText = d;
     container.appendChild(div);
+    setTimeout(() => { div.style.opacity = 1; }, i*100);
   });
 }
 
 function ex(type) {
   const container = document.getElementById("exerciseResult");
   container.innerHTML = "";
-  aiData.exercise[type].forEach(d => {
+  aiData.exercise[type].forEach((d, i) => {
     const div = document.createElement("div");
     div.className = "ai-result-card";
     div.innerText = d;
     container.appendChild(div);
+    setTimeout(() => { div.style.opacity = 1; }, i*100);
   });
 }
 
 // Simulated backend status
-setTimeout(() => {
-  document.getElementById("apiStatus").innerText = "Backend Status: Connected ✔";
-}, 500);
+setTimeout(() => { document.getElementById("apiStatus").innerText = "Backend Status: Connected ✔"; }, 500);
 </script>
 
 </body>
