@@ -13,10 +13,7 @@
     h1 { text-align: center; }
     .subtitle { text-align: center; color: #ddd; }
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-    }
+    .container { max-width: 900px; margin: auto; }
 
     .card {
       background: white;
@@ -44,11 +41,7 @@
 
     .sport-card:hover { transform: scale(1.05); }
 
-    .sport-card img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-    }
+    .sport-card img { width: 100%; height: 120px; object-fit: cover; }
 
     button {
       width: 100%;
@@ -59,89 +52,166 @@
       background: #1e88e5;
       color: white;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     button:hover { background: #1565c0; }
 
     .hidden { display: none; }
+
+    #apiStatus { font-size: 14px; color: #c8e6c9; text-align: center; }
+
+    .back-btn { background: #e53935; margin-top: 15px; }
+    .back-btn:hover { background: #b71c1c; }
+
+    .tab-btn {
+      flex: 1;
+      background: #1e88e5;
+      color: white;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .tab-btn.active { background: #1565c0; font-weight: bold; }
+
+    .ai-result-container {
+      max-height: 300px; 
+      overflow-y: auto;
+      margin-top: 15px;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 12px;
+    }
+
+    .ai-result-card {
+      background: white;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .coach-card {
+      background: #f5f5f5;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .coach-card p { margin: 5px 0; }
+    .coach-name { font-weight: bold; font-size: 16px; }
+    .coach-exp { font-size: 14px; color: #555; }
+
+    .mini-tab-btn {
+      flex: 1;
+      padding: 6px;
+      font-size: 12px;
+      border-radius: 5px;
+      background: #1e88e5;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .mini-tab-btn.active { background: #1565c0; font-weight: bold; }
   </style>
 </head>
 
 <body>
-
 <h1>🏆 Game Guru</h1>
 <p class="subtitle">AI-Based Sports & Fitness Coaching</p>
+<p id="apiStatus">Backend Status: Connecting...</p>
 
 <div class="container">
 
-<!-- FIRST SCREEN -->
-<div class="card" id="sportsSection">
-  <h2>Select a Category</h2>
-  <div class="grid">
-
-    <div class="sport-card" onclick="selectSport('Cricket')">
-      <img src="https://images.unsplash.com/photo-1593766827228-8737b4534aa6?auto=format&fit=crop&w=800&q=60">
-      <p>🏏 Cricket</p>
+  <!-- FIRST SCREEN -->
+  <div class="card" id="sportsSection">
+    <h2>Select a Category</h2>
+    <div class="grid">
+      <div class="sport-card" onclick="selectSport('Cricket')">
+        <img src="https://images.unsplash.com/photo-1593766827228-8737b4534aa6?auto=format&fit=crop&w=800&q=60">
+        <p>🏏 Cricket</p>
+      </div>
+      <div class="sport-card" onclick="selectSport('Basketball')">
+        <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=800&q=60">
+        <p>🏀 Basketball</p>
+      </div>
+      <div class="sport-card" onclick="selectSport('Football')">
+        <img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=800&q=60">
+        <p>⚽ Football</p>
+      </div>
+      <div class="sport-card" onclick="selectSport('Athletics')">
+        <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=60">
+        <p>🏃 Athletics</p>
+      </div>
+      <div class="sport-card" onclick="openAICoach()" 
+           style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; padding: 30px;">
+        <div style="font-size: 48px;">🤖</div>
+        <p style="font-size: 18px; font-weight: bold; margin-top: 10px;">AI Coach</p>
+        <p style="font-size: 13px; opacity: 0.9;">Smart Diet & Training</p>
+      </div>
     </div>
-
-    <div class="sport-card" onclick="selectSport('Basketball')">
-     <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=800&q=60">
-      <p>🏀 Basketball</p>
-
-    </div>
-
-    <div class="sport-card" onclick="selectSport('Football')">
-      <img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=800&q=60">
-      <p>⚽ Football</p>
-    </div>
-
-    <div class="sport-card" onclick="selectSport('Athletics')">
-      <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=60">
-      <p>🏃 Athletics</p>
-    </div>
-
-    <div class="sport-card" onclick="openAICoach()" 
-     style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
-            color: white; 
-            padding: 30px;">
-  <div style="font-size: 48px;">🤖</div>
-  <p style="font-size: 18px; font-weight: bold; margin-top: 10px;">
-    AI Coach
-  </p>
-  <p style="font-size: 13px; opacity: 0.9;">
-    Smart Diet & Training
-  </p>
-</div>
-
   </div>
-</div>
 
-<!-- COACH SECTION -->
-<div class="card hidden" id="coachSection">
-  <h2 id="coachTitle"></h2>
-  <div id="coachList"></div>
-</div>
+  <!-- COACH SECTION -->
+  <div class="card hidden" id="coachSection">
+    <h2 id="coachTitle"></h2>
+    <div id="coachList" class="ai-result-container"></div>
+    <button class="back-btn" onclick="backToSports()">⬅ Back</button>
+  </div>
 
-<!-- AI COACH SECTION -->
-<div class="card hidden" id="aiSection">
-  <h2>AI Coach Assistant</h2>
-  <button onclick="showDiet()">🥗 Diet Plans</button>
-  <button onclick="showExercise()">💪 Exercise Routines</button>
-  <div id="aiContent"></div>
-</div>
+  <!-- AI COACH SECTION -->
+  <div class="card hidden" id="aiSection">
+    <h2>AI Coach Assistant</h2>
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+      <button id="dietTabBtn" class="tab-btn" onclick="showTab('diet')">🥗 Diet Plans</button>
+      <button id="exerciseTabBtn" class="tab-btn" onclick="showTab('exercise')">💪 Exercise Routines</button>
+    </div>
+    <div id="aiContent"></div>
+    <button class="back-btn" onclick="backToSports()">⬅ Back</button>
+  </div>
 
 </div>
 
 <script>
 let selectedSport = "";
+let activeTab = "";
 
-const coaches = {
-  "Cricket": ["Coach Rahul", "Coach Aman"],
-  "Basketball": ["Coach Neha"],
-  "Football": ["Coach Arjun"],
-  "Athletics": ["Coach Pooja"]
+// Simulated JSON data for coaches
+const coachesData = {
+  "Cricket": [
+    {name: "Coach Rahul", exp: "10 years coaching professional cricket players."},
+    {name: "Coach Aman", exp: "7 years experience in youth cricket coaching."}
+  ],
+  "Basketball": [
+    {name: "Coach Neha", exp: "5 years coaching school & college basketball teams."}
+  ],
+  "Football": [
+    {name: "Coach Arjun", exp: "8 years experience in football tactics and training."}
+  ],
+  "Athletics": [
+    {name: "Coach Pooja", exp: "6 years coaching sprinters and long-distance runners."}
+  ]
 };
 
+// Simulated JSON data for AI suggestions
+const aiData = {
+  diet: {
+    loss: ["High protein, low sugar, daily cardio.", "Include more vegetables and hydration."],
+    gain: ["Calorie surplus, strength training, protein-rich diet.", "Include healthy fats and complex carbs."]
+  },
+  exercise: {
+    Chest: ["Push-ups: 3x15", "Bench Press: 3x10"],
+    Legs: ["Squats: 3x12", "Lunges: 3x15"],
+    Strength: ["Deadlifts: 3x8", "Overhead Press: 3x10"],
+    Sprint: ["100m sprints: 5 rounds", "Interval training: 10 mins"],
+    Back: ["Pull-ups: 3x10", "Rows: 3x12"],
+    Biceps: ["Bicep curls: 3x12", "Hammer curls: 3x12"]
+  }
+};
+
+// Select sport -> show coaches
 function selectSport(sport) {
   selectedSport = sport;
   document.getElementById("aiSection").classList.add("hidden");
@@ -149,55 +219,128 @@ function selectSport(sport) {
   document.getElementById("coachTitle").innerText = "Coaches for " + sport;
 
   let html = "";
-  coaches[sport].forEach(c => {
+  coachesData[sport].forEach((c, index) => {
     html += `
-      <p><b>${c}</b></p>
-      <button>Select Coach</button>
-      <label>Upload Review Video:</label>
-      <input type="file" accept="video/*"><hr>
+      <div class="coach-card" id="coachCard${index}">
+        <p class="coach-name">${c.name}</p>
+        <p class="coach-exp">${c.exp}</p>
+        <div style="display:flex; gap:5px; margin:10px 0;">
+          <button onclick="showCoachTab(${index}, 'select')" class="mini-tab-btn active">Select Coach</button>
+          <button onclick="showCoachTab(${index}, 'subscribe')" class="mini-tab-btn">Subscribe</button>
+          <button onclick="showCoachTab(${index}, 'demo')" class="mini-tab-btn">Get Demo Batch</button>
+        </div>
+        <div id="coachContent${index}">
+          <button>Select Coach</button>
+          <label>Upload Review Video:</label>
+          <input type="file" accept="video/*">
+        </div>
+      </div>
     `;
   });
 
   document.getElementById("coachList").innerHTML = html;
 }
 
+// Mini-tabs with fade animation
+function showCoachTab(index, tab) {
+  const contentDiv = document.getElementById(`coachContent${index}`);
+  const card = document.getElementById(`coachCard${index}`);
+  const buttons = card.querySelectorAll(".mini-tab-btn");
+
+  buttons.forEach(btn => btn.classList.remove("active"));
+  const activeBtn = Array.from(buttons).find(btn => btn.innerText.toLowerCase().includes(tab));
+  if(activeBtn) activeBtn.classList.add("active");
+
+  contentDiv.style.transition = "opacity 0.3s";
+  contentDiv.style.opacity = 0; // fade out
+  setTimeout(() => {
+    if(tab === 'select') {
+      contentDiv.innerHTML = `
+        <button>Select Coach</button>
+        <label>Upload Review Video:</label>
+        <input type="file" accept="video/*">
+      `;
+    } else if(tab === 'subscribe') {
+      contentDiv.innerHTML = `
+        <p>Subscribe to this coach for weekly training updates.</p>
+        <button>Subscribe Now</button>
+      `;
+    } else if(tab === 'demo') {
+      contentDiv.innerHTML = `
+        <p>Sign up for a demo batch session with this coach.</p>
+        <button>Get Demo Batch</button>
+      `;
+    }
+    contentDiv.style.opacity = 1; // fade in
+  }, 200);
+}
+
+// Open AI Coach section
 function openAICoach() {
   document.getElementById("coachSection").classList.add("hidden");
   document.getElementById("aiSection").classList.remove("hidden");
-  document.getElementById("aiContent").innerHTML = "";
+  showTab('diet');
 }
 
-function showDiet() {
-  document.getElementById("aiContent").innerHTML = `
-    <h3>Choose Your Goal</h3>
-    <button onclick="dietResult('loss')">Weight Loss</button>
-    <button onclick="dietResult('gain')">Weight Gain</button>
-  `;
+// Back button
+function backToSports() {
+  document.getElementById("coachSection").classList.add("hidden");
+  document.getElementById("aiSection").classList.add("hidden");
+  document.getElementById("sportsSection").classList.remove("hidden");
 }
 
-function dietResult(type) {
-  document.getElementById("aiContent").innerHTML =
-    type === 'loss'
-    ? "<p>AI Suggestion: High protein, low sugar, daily cardio.</p>"
-    : "<p>AI Suggestion: Calorie surplus, strength training, protein-rich diet.</p>";
+// AI tabs
+function showTab(tab) {
+  activeTab = tab;
+  document.getElementById("dietTabBtn").classList.toggle("active", tab === 'diet');
+  document.getElementById("exerciseTabBtn").classList.toggle("active", tab === 'exercise');
+
+  let content = "";
+  if(tab === 'diet') {
+    content = `<h3>Choose Your Goal</h3>
+      <button onclick="dietResult('loss')">Weight Loss</button>
+      <button onclick="dietResult('gain')">Weight Gain</button>
+      <div id="dietResult" class="ai-result-container"></div>`;
+  } else if(tab === 'exercise') {
+    content = `<h3>Select Exercise Type</h3>
+      <button onclick="ex('Chest')">Chest</button>
+      <button onclick="ex('Legs')">Legs</button>
+      <button onclick="ex('Strength')">Strength</button>
+      <button onclick="ex('Sprint')">Sprint</button>
+      <button onclick="ex('Back')">Back</button>
+      <button onclick="ex('Biceps')">Biceps</button>
+      <div id="exerciseResult" class="ai-result-container"></div>`;
+  }
+  document.getElementById("aiContent").innerHTML = content;
 }
 
-function showExercise() {
-  document.getElementById("aiContent").innerHTML = `
-    <h3>Select Exercise Type</h3>
-    <button onclick="ex('Chest')">Chest</button>
-    <button onclick="ex('Legs')">Legs</button>
-    <button onclick="ex('Strength')">Strength</button>
-    <button onclick="ex('Sprint')">Sprint</button>
-    <button onclick="ex('Back')">Back</button>
-    <button onclick="ex('Biceps')">Biceps</button>
-  `;
+// AI diet & exercise
+function dietResult(goal) {
+  const container = document.getElementById("dietResult");
+  container.innerHTML = "";
+  aiData.diet[goal].forEach(d => {
+    const div = document.createElement("div");
+    div.className = "ai-result-card";
+    div.innerText = d;
+    container.appendChild(div);
+  });
 }
 
 function ex(type) {
-  document.getElementById("aiContent").innerHTML =
-    "<p>AI Exercise Plan for <b>" + type + "</b>: Basic drills and routines.</p>";
+  const container = document.getElementById("exerciseResult");
+  container.innerHTML = "";
+  aiData.exercise[type].forEach(d => {
+    const div = document.createElement("div");
+    div.className = "ai-result-card";
+    div.innerText = d;
+    container.appendChild(div);
+  });
 }
+
+// Simulated backend status
+setTimeout(() => {
+  document.getElementById("apiStatus").innerText = "Backend Status: Connected ✔";
+}, 500);
 </script>
 
 </body>
